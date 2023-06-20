@@ -14,7 +14,7 @@ services:
         tty: true
         working_dir: /var/www/karma8
         volumes:
-            - ./:/var/www/karma8
+            - ./var:/var/www/karma8/var
 
     postgres:
         container_name: karma8.postgres14
