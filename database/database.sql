@@ -5,7 +5,7 @@ CREATE TABLE users
     username VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL,
     validts TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL,
-    confirmed BOOLEAN NOT NULL DEFAULT true,
+    confirmed BOOLEAN NOT NULL DEFAULT false,
     valid BOOLEAN DEFAULT NULL
 );
 

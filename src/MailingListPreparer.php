@@ -6,7 +6,7 @@ use \PhpAmqpLib\Message\AMQPMessage;
 
 $options = getopt("d:");
 
-$limit = 1000;
+$limit = $_ENV['DEFAULT_BATCH_SIZE'];
 $offset = 0;
 $delta = $options['d'] ?? 1; // Количество дней до истечения подписки
 $periodStarts = (new \DateTime('now', new \DateTimeZone('UTC')))->modify('+' . $delta . ' days');
@@ -56,7 +56,7 @@ do {
          * Если email подтвержден или валиден, то сразу можно отправлять
          */
         if (true === $user['confirmed'] || true === $user['valid']) {
-            $channel->basic_publish($message, 'event.mailing_list', '');
+            $channel->basic_publish($message, $_ENV['MAILING_LIST_EXCHANGE'], '');
         }
 
         /**
@@ -64,7 +64,7 @@ do {
          * После прохождения проверки, если будет успешна, то consumer сам отправит событие в exchange event.mailing_list
          */
         if (false === $user['confirmed'] && null === $user['valid']) {
-            $channel->basic_publish($message, 'event.check_email_list', '');
+            $channel->basic_publish($message, $_ENV['CHECK_MAIL_EXCHANGE'], '');
         }
     }
     $offset += $limit;
